@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Runtime;
-using System.Security.Policy;
-using System.Text;
-using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace DriverEasyActivator
 {
@@ -15,11 +10,9 @@ namespace DriverEasyActivator
         static void Main(string[] args)
         {
             Console.Title = "Driver Easy Activator | github.com/YungSamzy";
-            Console.WriteLine("Activating...");
             if (File.Exists($"C:\\Users\\{Environment.UserName}\\AppData\\Roaming\\Easeware\\DriverEasy\\license.dat"))
             {
-                Console.WriteLine("Error! Couldn't activate because you already have a license key installed!");
-                Console.ReadKey();
+                MessageBox.Show("Error! Couldn't activate because you already have a license key installed!", "Driver Easy Activator", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
             File.WriteAllBytes($"C:\\Users\\{Environment.UserName}\\AppData\\Roaming\\Easeware\\DriverEasy\\license.dat", Resource1.license);
@@ -30,15 +23,14 @@ namespace DriverEasyActivator
             }
             catch(System.UnauthorizedAccessException)
             {
-                Console.WriteLine("Error! Run this program as administrator!");
-                Console.WriteLine("We need administrator privileges to write to certian files on the computer!");
-                Console.ReadKey();
+                MessageBox.Show("Error! Run this program as administrator!", "Driver Easy Activator", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
             catch(Exception ex)
             {
-                Console.WriteLine("Error!");
-                Console.WriteLine(ex.ToString());
+                MessageBox.Show("Error!", "Driver Easy Activator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                File.WriteAllText($"error{DateTime.Now.ToString()}.log", ex.ToString());
+                Console.WriteLine("Error log created!");
                 Console.WriteLine("Please open an issue on the github!");
                 Console.ReadKey();
                 return;
@@ -48,7 +40,7 @@ namespace DriverEasyActivator
             {
                 process.Kill();
             }
-            Console.WriteLine("Success!");
+            MessageBox.Show("Success!", "Driver Easy Activator", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }
 }
